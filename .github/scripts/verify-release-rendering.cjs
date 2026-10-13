@@ -1,4 +1,4 @@
-// Actual Chromium render checks of instructor files at immutable Git tags.
+// Actual Chromium render checks of instructor files at recorded Git tag snapshots.
 // No website deployment; only loopback HTTP inside this disposable runner.
 const fs = require('node:fs');
 const http = require('node:http');
