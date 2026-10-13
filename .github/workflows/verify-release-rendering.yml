@@ -1,0 +1,33 @@
+name: Verify tagged release rendering
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/verify-release-rendering.yml
+      - .github/scripts/verify-release-rendering.cjs
+permissions:
+  contents: read
+jobs:
+  chromium-tags:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install pinned browser driver and Chromium
+        run: |
+          npm install --no-save --package-lock=false playwright@1.64.0
+          npx playwright install --with-deps chromium
+      - name: Render actual tagged instructor snapshots on loopback
+        run: node .github/scripts/verify-release-rendering.cjs
+      - name: Preserve screenshots and observed pixels
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tagged-release-rendering-${{ github.run_id }}
+          path: ${{ runner.temp }}/release-render-evidence
+          retention-days: 7
+          if-no-files-found: error
