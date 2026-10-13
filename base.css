@@ -106,6 +106,7 @@ section {
   display: block;
 }
 body {
+  /* Release feature: keep the page background black. */
   background-color: black;
 }
 ol,
