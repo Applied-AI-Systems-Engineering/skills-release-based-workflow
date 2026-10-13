@@ -106,7 +106,8 @@ section {
   display: block;
 }
 body {
-  /* Add background-color declaration here */
+  /* Release feature: keep the page background black. */
+  background-color: black;
 }
 ol,
 ul {
